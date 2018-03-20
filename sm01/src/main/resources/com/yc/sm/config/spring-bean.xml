@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 导入资源文件 -->
+	<context:property-placeholder location="classpath:db.properties" />
+
+
+	<!-- 启用注解 -->
+	<context:component-scan base-package="com.yc.sm" />
+
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${driverClass}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${user}" />
+		<property name="password" value="${password}" />
+	</bean>
+
+	<!-- 获取sqlSession工厂 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 配置数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+
+		<!-- 配置mybatis的映射文件 -->
+		<property name="mapperLocations" value="com/yc/sm/mapper/*Mapper.xml"></property>
+
+		<!-- 启用实体类的别名 -->
+		<property name="typeAliasesPackage" value="com.yc.sm.bean"></property>
+	</bean>
+
+
+	<!-- 配置mybatis映射接口的代理实现类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!--  <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+		<property name="basePackage" value="com.yc.sm.dao"></property>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+</beans>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 命名空间为映射接口的全路径 -->
+<mapper namespace="com.yc.bean.Dept">
+	<!-- 对应的id名为该接口下的方法的方法名 -->
+	<insert id="add" parameterType="Dept">
+		insert into dept values(#{deptno},#{dname},#{loc})
+	</insert>
+	
+	<update id="update" parameterType="Dept">
+		update dept set dname=#{dname},loc=#{loc} where deptno=#{deptno}
+	</update>
+	
+	<select id="findAll" resultType="Dept">
+		select deptno,dname,loc from dept
+	</select>
+</mapper>
